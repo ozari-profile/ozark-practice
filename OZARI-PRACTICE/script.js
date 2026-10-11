@@ -59,23 +59,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
-});
-// Скролл к конкретной карточке, если в адресе есть #hash
-document.addEventListener('DOMContentLoaded', function() {
-    const hash = window.location.hash.replace('#', '');
-    if (!hash) return;
 
-    // Ждём, пока страница прогрузится
-    setTimeout(() => {
-        const targetCard = document.getElementById(hash);
-        if (targetCard) {
-            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            // Подсвечиваем карточку на 2 секунды
-            targetCard.style.transition = 'box-shadow 0.3s ease';
-            targetCard.style.boxShadow = '0 0 0 3px #c5a880';
-            setTimeout(() => {
-                targetCard.style.boxShadow = '';
-            }, 2000);
-        }
-    }, 300);
+    // Скролл к конкретной карточке (после фильтрации!)
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+        setTimeout(() => {
+            const targetCard = document.getElementById(hash);
+            if (targetCard) {
+                targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                targetCard.style.transition = 'box-shadow 0.3s ease';
+                targetCard.style.boxShadow = '0 0 0 3px #c5a880';
+                setTimeout(() => {
+                    targetCard.style.boxShadow = '';
+                }, 2000);
+            }
+        }, 400);
+    }
 });
