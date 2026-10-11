@@ -63,16 +63,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Скролл к конкретной карточке (после фильтрации!)
     const hash = window.location.hash.replace('#', '');
     if (hash) {
-        setTimeout(() => {
+        // Ждём 800 мс — чтобы страница точно отрисовалась
+        setTimeout(function() {
             const targetCard = document.getElementById(hash);
             if (targetCard) {
-                targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Считаем позицию элемента от верха страницы
+                const rect = targetCard.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const targetPosition = rect.top + scrollTop - 100; // отступ сверху 100px
+
+                // Плавный скролл
+                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+
+                // Подсветка золотой рамкой
                 targetCard.style.transition = 'box-shadow 0.3s ease';
                 targetCard.style.boxShadow = '0 0 0 3px #c5a880';
-                setTimeout(() => {
+                setTimeout(function() {
                     targetCard.style.boxShadow = '';
-                }, 2000);
+                }, 2500);
             }
-        }, 400);
+        }, 800);
     }
 });
