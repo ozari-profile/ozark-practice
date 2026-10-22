@@ -238,3 +238,64 @@ body::before {
     z-index: 0;
     pointer-events: none;
 }
+/* Video players only start on explicit click, preserving fast mobile loads. */
+.ozari-video-placeholder {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    aspect-ratio: 16 / 9;
+    min-height: 176px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    overflow: hidden;
+    padding: 24px 16px;
+    text-align: center;
+    background: radial-gradient(ellipse at 82% 15%, rgba(197,168,128,.28), transparent 55%),
+                linear-gradient(145deg, #1b465c 0%, #15384f 57%, #0d2a3d 100%);
+}
+.ozari-video-label {
+    color: #f4e5ce;
+    letter-spacing: .14em;
+    font: 11px/1.4 'Roboto Condensed', sans-serif;
+}
+.ozari-video-play {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 52px;
+    padding: 11px 20px;
+    font: 15px/1.3 'Roboto Condensed', sans-serif;
+    color: #15384f;
+    background: #f6f2ea;
+    border: 1px solid #c5a880;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: background-color .2s ease, transform .2s ease;
+}
+.ozari-video-play:hover { background-color: #fffdf9; transform: translateY(-2px); }
+.ozari-video-play:focus-visible { outline: 3px solid #c5a880; outline-offset: 4px; }
+.ozari-video-play-icon { color: #a88b5f; font-size: 13px; }
+.ozari-video-hint {
+    color: #eee9e2;
+    font: 12px/1.4 'Roboto Condensed', sans-serif;
+    opacity: .88;
+}
+.ozari-video-frame {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 176px;
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: #15384f;
+}
+@media (max-width: 480px) {
+    .ozari-video-placeholder { min-height: 156px; gap: 10px; padding: 18px 12px; }
+    .ozari-video-play { min-height: 48px; font-size: 14px; }
+    .ozari-video-label { font-size: 10px; }
+    .ozari-video-frame { min-height: 156px; }
+}
