@@ -15,8 +15,48 @@ document.addEventListener('DOMContentLoaded', function() {
         'rest': 'Отдых'
     };
 
+
+    // Load Kinescope only after a visitor chooses a practice.
+    // This prevents 22 third-party video players from loading on mobile.
+    const originalVideoMarkup = new Map(
+        Array.from(document.querySelectorAll('.ozari-video-placeholder'), element => [element, element.innerHTML])
+    );
+    const grid = document.getElementById('grid');
+    let activeVideoContainer = null;
+
+    function stopActiveVideo() {
+        if (!activeVideoContainer) return;
+        const markup = originalVideoMarkup.get(activeVideoContainer);
+        if (markup) activeVideoContainer.innerHTML = markup;
+        activeVideoContainer = null;
+    }
+
+    if (grid) {
+        grid.addEventListener('click', function(event) {
+            const button = event.target.closest('.ozari-video-play');
+            if (!button) return;
+            const container = button.closest('.ozari-video-placeholder');
+            if (!container) return;
+
+            const url = container.getAttribute('data-embed-url') || '';
+            if (!/^https:\/\/kinescope\.io\/embed\/[A-Za-z0-9]+$/.test(url)) return;
+
+            stopActiveVideo();
+            const frame = document.createElement('iframe');
+            frame.src = url;
+            frame.title = 'Видео: ' + (container.closest('.card')?.querySelector('.card-title')?.textContent || 'Практика ОЗАРИ');
+            frame.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock';
+            frame.allowFullscreen = true;
+            frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+            frame.className = 'ozari-video-frame';
+            container.replaceChildren(frame);
+            activeVideoContainer = container;
+        });
+    }
+
     // Функция фильтрации
     function filterCards(sphere) {
+        stopActiveVideo();
         cards.forEach(card => {
             if (sphere === 'all' || card.dataset.sphere === sphere) {
                 card.classList.remove('hidden');
